@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>index</title>
+    <style>
+        li {
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <ul id='list'></ul>
+</body>
+<script>
+    const $list = document.querySelector('#list');
+    let n = 100000;
+    // 直接操作DOM添加节点
+    console.time('time')
+    while(n--){
+        $list.appendChild(document.createElement('li'));
+    };
+    console.timeEnd('time')
+</script>
+</html>

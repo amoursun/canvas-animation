@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- <meta http-equiv="Content-Security-Policy" content="script-src https://dongting.cdn.bcebos.com/ 'unsafe-inline'; img-src https://freepngimg.com/ " /> -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="img-src https://freepngimg.com/;"/>
+        <meta http-equiv="Content-Security-Policy" content="script-src https://dongting.cdn.bcebos.com/ 'unsafe-inline';" /> -->
+        
+        <title>Test CSP</title>
+    </head>
+    <body>
+        <img src="https://freepngimg.com/static/img/cat/tree.png" />
+    </body>
+    <script>
+        const meta = document.createElement('meta');
+        meta.httpEquiv = 'Content-Security-Policy';
+        // meta.content = 'script-src dongting.cdn.bcebos.com \'unsafe-inline\';img-src freepngimg.com;';
+        // meta.content = 'script-src dongting.cdn.bcebos.com; img-src freepngimg.com;';
+        // meta.content = 'script-src dongting.cdn.bcebos.com/dongting-front/prod/dongting_launch.min.js; img-src freepngimg.com;';
+       
+        // document.head.appendChild(meta);
+        // 不会运行
+        meta.addEventListener('load', () => {
+            console.log('meta loaded');
+        });
+        const script = document.createElement('script');
+        // script.src = 'https://dongting.cdn.bcebos.com/dongting-front/prod/dongting_launch.min.js';
+        script.src = 'http://dongting.cdn.bcebos.com/dongting-front/prod/dongting_launch.min.js';
+        document.head.appendChild(script);
+    </script>
+</html>

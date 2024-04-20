@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>createDocumentFragment</title>
+    <style>
+        li {
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <ul id='list'></ul>
+</body>
+<script>
+    const $list = document.querySelector('#list');
+    let n = 100000;
+
+    // 使用documentFragment添加节点
+    console.time('time-fragment')
+    const fragment = document.createDocumentFragment();
+    while(n--){
+        fragment.appendChild(document.createElement('li'));
+    };
+    $list.appendChild(fragment);
+    console.timeEnd('time-fragment')
+</script>
+</html>

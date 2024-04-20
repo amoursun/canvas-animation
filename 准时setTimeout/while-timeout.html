@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>while 模拟 setTimeout</title>
+</head>
+<body>
+</body>
+<script>
+    function getTime() {
+        return Date.now();
+    }
+    function whileTimeout(cb, delay) { 
+        const startTime = getTime();
+        while(true) { 
+            const now = getTime();
+            if(now - startTime >= delay) { 
+                console.log('误差', now - startTime - delay);
+                cb && cb();
+                return;
+            } 
+        }
+    }
+    const speed = 50;
+    const timer = () => { 
+        const instance = () => {
+            whileTimeout(instance, speed);
+            // for(let x=1, i=0; i<10000000; i++) { x *= (i + 1); }
+        }; 
+        whileTimeout(instance, speed); 
+    };
+    timer();
+</script>
+</html>

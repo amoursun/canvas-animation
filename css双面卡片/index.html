@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css 双面卡片</title>
+    <style>
+        .card {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            perspective: 500px;
+            width: 200px;
+            height: 150px;
+        }
+        img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 1s;
+            transform-style: preserve-3d;
+        }
+        .back, .front {
+            /* 元素背面不可见 */
+            backface-visibility: hidden;
+        }
+        .card:hover .front {
+            transform: rotateY(-180deg);
+        }
+        .back {
+            transform: rotateY(180deg);
+        }
+        .card:hover .back {
+            transform: rotateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img class="front" src="./assets/front.jpeg">
+        <img class="back" src="./assets/back.jpeg">
+    </div>
+</body>
+</html>

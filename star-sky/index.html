@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>star sky</title>
+    <style>
+        
+        body{
+            background: #000;
+        }
+        #wrapper {
+            position:absolute;
+            top:50px;
+            left:80%;
+            width:200px;
+            height:200px;
+            margin-left:-100px;
+            animation: moonLine 5s linear;
+        }
+        @keyframes moonLine {
+            0% {top:250px;left:0%;opacity:0;}
+            30% {top:150px;left:40%;opacity:0.5;}
+            80% {top:50px;left:80%;opacity:1;}
+        }
+        #circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 200px;
+            height: 200px;
+            background-color: #EFEFEF;
+            box-shadow:0 0 40px #FFFFFF;
+            border-radius: 100px;
+            animation:moonLight 5s linear;
+
+        }
+        @keyframes moonLight {
+            0% {-webkit-box-shadow:0 0 10px #FFFFFF;}
+            30% {-webkit-box-shadow:0 0 15px #FFFFFF;}
+            40% {-webkit-box-shadow:0 0 20px #FFFFFF;}
+            50% {-webkit-box-shadow:0 0 25px #FFFFFF;}
+            100% {-webkit-box-shadow:0 0 30px #FFFFFF;}
+        }
+
+        @keyframes flash {
+            0%{opacity: 0.2}
+            50%{opacity: 1}
+            100%{opacity: 0.2}
+        }
+        .star {
+            display: inline-block;
+            background: #fff;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-repeat:no-repeat;
+            background-position-x:center;
+            background-position-y:center;
+            position: fixed;
+            animation: flash 2s linear infinite;
+        }
+        .star:hover{
+            transform: scale(3, 3) rotate(180deg) !important;
+            transition: all 1s;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="circle"></div>
+    </div>
+    <script>
+        const num = 300;
+        const screenW = document.documentElement.clientWidth;
+        const screenH = document.documentElement.clientHeight;
+        const fragment = document.createDocumentFragment();
+        const $wrapper = document.getElementById('wrapper');
+        for(let i = 0; i < num; i++){
+            const span = document.createElement('span');
+            span.className = 'star';
+            fragment.appendChild(span);
+            // $wrapper.appendChild(span);
+            const x = parseInt(Math.random() * screenW);
+            const y = parseInt(Math.random() * screenH);
+            span.style.left = x + 'px';
+            span.style.top = y + 'px';
+            span.style.zIndex = '0';
+            const scale = Math.random() * 1.5;
+            span.style.transform = 'scale('+ scale + ', ' + scale + ')';
+            const rate = Math.random() * 1.5;
+            span.style.animationDelay = rate + 's';
+        }
+        $wrapper.appendChild(fragment);
+    </script>
+</body>
+</html>

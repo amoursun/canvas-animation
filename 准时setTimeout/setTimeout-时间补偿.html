@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>setTimeout</title>
+</head>
+<body>
+    <form>
+        <p>理想值：<input type="text" name="ideal"></p>
+        <p>实际值：<input type="text" name="real"></p>
+        <p>误差值：<input type="text" name="diff"></p>
+        <button class="timer" type="button">开始计时</button>
+        <button class="stop" type="button">停止计时</button>
+    </form>
+</body>
+<script>
+    const form = document.querySelector('form');
+    const $stop = document.querySelector('.stop');
+    const $timer = document.querySelector('.timer');
+    const speed = 50; // 设定间隔
+    const status = {
+        stopped: false,
+    };
+    function getTime() {
+        return new Date().getTime();
+    }
+    const stop = () => {
+        status.stopped = true;
+    };
+    const timer = () => { 
+        status.stopped = false;
+        let counter = 1;  // 计数 
+        const start = getTime(); 
+        
+        const instance = () => {
+            if (status.stopped) {
+                return;
+            }
+            const ideal = counter * speed;
+            const real = new Date().getTime() - start; 
+            
+            counter++; 
+            form.ideal.value = ideal; // 记录理想值 
+            form.real.value = real;   // 记录真实值 
+        
+            const diff = real - ideal;  // 差值 
+            form.diff.value = diff;  // 差值 
+        
+            window.setTimeout(instance, (speed - diff)); // 通过系统时间进行修复
+            // for(let x=1, i=0; i<10000000; i++) { x *= (i + 1); }
+        }; 
+        window.setTimeout(instance, speed); 
+    };
+
+    $timer.addEventListener('click', timer);
+    $stop.addEventListener('click', stop);
+</script>
+</html>

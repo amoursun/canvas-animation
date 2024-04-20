@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跨标签通讯</title>
+    <style>
+        .card {
+            width: 300px;
+            height: 300px;
+            background-color: #f00;
+            position: fixed;
+            top: 100px;
+            left: 100px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    跨标签通讯
+    <div class="card">card</div>
+</body>
+<script>
+    function getBarRect() {
+        return {
+            height: window.outerHeight - window.innerHeight,
+            width: window.outerWidth - window.innerWidth,
+        };
+    }
+    function barHeight() {
+        return getBarRect().height;
+    }
+    // 屏幕坐标转换为窗口坐标
+    const screenToClient = (screenX, screenY) => {
+        const clientX = screenX - window.screenX;
+        const clientY = screenY - window.screenY - barHeight();
+        return [clientX, clientY];
+    };
+
+    // 窗口坐标转换为屏幕坐标
+    const clientToScreen = (clientX, clientY) => {
+        const screenX = clientX + window.screenX;
+        const screenY = clientY + window.screenY + barHeight();
+        return [screenX, screenY];
+    };
+    
+    const $card = document.querySelector('.card');
+    $card.style.top = 100 + 'px';
+    $card.style.left = 100 + 'px';
+    $card.style.background = new URLSearchParams(window.location.search).get('color') || '#f00';
+
+    // 创建 BroadcastChannel 实例
+    const channel = new BroadcastChannel('channel');
+    // 监听消息
+    channel.onmessage = function (event) {
+        console.log('onmessage', event.data);
+        const [x, y] = event.data;
+        // 接收消息
+        const [clientX, clientY] = screenToClient(x, y);
+        // 不同窗口的卡片要在同一个位置, 要放到同一个坐标系下面, 保持屏幕坐标一致
+        $card.style.left = clientX + 'px';
+        $card.style.top = clientY + 'px';
+    };
+    // 发送消息
+    const sendMessage = (message) => {
+        channel.postMessage(message);
+    };
+
+    window.onload = function () {
+        $card.onmousedown = function (e) {
+            $card.style.cursor = 'pointer';
+            let x = e.pageX - $card.offsetLeft;
+            let y = e.pageY - $card.offsetTop;
+
+            window.onmousemove = function (e) {
+                $card.style.left = e.clientX - x + 'px';
+                $card.style.top = e.clientY - y + 'px';
+                // 发送消息
+                const clientCoordinateX = e.clientX - x;
+                const clientCoordinateY = e.clientY - y;
+                const ScreenCoordinate = clientToScreen(
+                    clientCoordinateX,
+                    clientCoordinateY
+                );
+                sendMessage(ScreenCoordinate);
+            }
+
+            window.onmouseup = function () {
+                window.onmousemove = null;
+                window.onmouseup = null;
+                $card.style.cursor = 'unset';
+            };
+        }
+    };
+</script>
+</html>

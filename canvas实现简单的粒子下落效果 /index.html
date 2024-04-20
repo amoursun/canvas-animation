@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas实现简单的粒子下落效果</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+    
+</body>
+<script type="module">
+    import {Animate} from './animate.js';
+    // 获取Canvas元素并获取上下文
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    document.body.appendChild(canvas);
+
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const animate = new Animate({
+            ctx,
+            canvas,
+            count: Math.floor(window.innerWidth / 2),
+        });
+        animate.create();
+        animate.animate();
+    }
+    init();
+
+    window.addEventListener('resize', () => {
+        init();
+    });
+    
+</script>
+</html>

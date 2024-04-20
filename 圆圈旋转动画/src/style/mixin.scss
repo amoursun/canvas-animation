@@ -1,0 +1,6 @@
+
+@mixin blockColor($bg-color, $text-color) {
+    display: block;
+    background-color: $bg-color;
+    color: $text-color;
+}
